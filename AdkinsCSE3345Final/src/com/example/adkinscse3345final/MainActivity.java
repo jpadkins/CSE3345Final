@@ -20,6 +20,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -56,6 +57,8 @@ public class MainActivity extends Activity implements OnClickListener {
 	// function for Button bt's onClickListener
 	public void onClick(View v) {
 		if (v.getId() == R.id.button) {
+			// show progress dialog
+			ProgressDialog progDialog = ProgressDialog.show(this, "", "Creating your slideshow. . . .", true);
 			// create callAPI object for networking
 			callAPI a = new callAPI();
 			// check if input is valid
@@ -66,6 +69,8 @@ public class MainActivity extends Activity implements OnClickListener {
 			} catch (ExecutionException e) {
 				e.printStackTrace();
 			}
+			// dismiss the progress dialog and reset edittext
+			progDialog.dismiss();
 			et.setText("");
 			// prepare to go to Slide Show
 			String[] imagesArray = images.toArray(new String[images.size()]);
@@ -116,8 +121,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		// this is the default json response if the parameters were not correct
 		if (string == "{\"kind\": \"Listing\", \"data\": {\"modhash\": \"\", \"children\": [], \"after\": null, \"before\": null}}" 
 				|| string == "{\"error\": 404}") {
-			Toast toast = Toast.makeText(getApplicationContext(), "Invalid Subreddit Name!", Toast.LENGTH_SHORT);
-			toast.show();
+			Toast.makeText(getApplicationContext(), "Invalid Subreddit Name!", Toast.LENGTH_SHORT).show();
 		}
 		// else the parameters were correct and we have a good json response
 		else {
@@ -132,7 +136,7 @@ public class MainActivity extends Activity implements OnClickListener {
 					string = jObject.optString("url");
 					// check if it is a valid image url
 					if (string.endsWith(".jpg") || string.endsWith(".png")) {
-							images.add(jObject.optString("url"));
+						images.add(string);
 					}
 				}
 			} catch (JSONException e) {

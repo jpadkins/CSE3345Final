@@ -4,14 +4,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.concurrent.ExecutionException;
-
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.widget.ImageView;
 
@@ -25,9 +22,7 @@ public class SlideShow extends Activity {
 	private int location;
 	// this is an object of a class which extends AsyncTask
 	private cycleImages c;
-	// this is a handler for use in perforing actions at time intervals
-	private Handler handle;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -36,13 +31,15 @@ public class SlideShow extends Activity {
 		// set variables
 		location = 0;
 		c = new cycleImages();
-		handle = new Handler();
 				
 		// set handlers
 		imageView = (ImageView) findViewById(R.id.image);
 		
 		// set images from the extra data sent by MainActivity
 		images = getIntent().getStringArrayExtra("images");
+		
+		// start slideshow
+		c.execute();
 		
 	}
 	
@@ -62,7 +59,6 @@ public class SlideShow extends Activity {
 					imageView.setImageBitmap(bitmap);
 				}
 			});
-			imageView.setImageBitmap(bitmap);
 			location++;
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
@@ -71,13 +67,24 @@ public class SlideShow extends Activity {
 		}
 	}
 	
+	// overridden onBackPressed() function to return to MainActivity
+	public void onBackPressed() {
+		finish();
+	}
+	
 	// cycleImages extends AsyncTask and is responsible for setting the images
 	final class cycleImages extends AsyncTask<Void, Void, Void> {
 		
 		@Override
 		protected Void doInBackground(Void... params) {
-			setImage();
-			return null;
+			while (true) {
+				setImage();
+				try {
+					Thread.sleep(3000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 }
