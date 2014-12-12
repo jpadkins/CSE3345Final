@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">AdkinsCSE3345Final</string>
+    <string name="editText">Enter a Name</string>
+    <string name="action_settings">Settings</string>
+    <string name="button">Search</string>
+    <string name="title_activity_slide_show">SlideShow</string>
+    <string name="hello_world">Hello world!</string>
+
+</resources>
