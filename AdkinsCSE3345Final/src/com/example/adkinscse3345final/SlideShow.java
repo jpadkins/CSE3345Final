@@ -4,13 +4,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 public class SlideShow extends Activity {
 	
@@ -22,6 +25,8 @@ public class SlideShow extends Activity {
 	private int location;
 	// this is an object of a class which extends AsyncTask
 	private cycleImages c;
+	// tv is the textview which displays the image number
+	private TextView tv;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +36,10 @@ public class SlideShow extends Activity {
 		// set variables
 		location = 0;
 		c = new cycleImages();
+		tv = (TextView) findViewById(R.id.imageNumber);
+		
+		// set tv text color
+		tv.setTextColor(Color.WHITE);
 				
 		// set handlers
 		imageView = (ImageView) findViewById(R.id.image);
@@ -56,6 +65,7 @@ public class SlideShow extends Activity {
 			runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
+					tv.setText("Image " + location + " / " + images.length);
 					imageView.setImageBitmap(bitmap);
 				}
 			});

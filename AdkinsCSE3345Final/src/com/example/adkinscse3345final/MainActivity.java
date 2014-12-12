@@ -20,8 +20,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,14 +29,21 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.SeekBar;
+import android.widget.SeekBar.OnSeekBarChangeListener;
+import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends Activity implements OnClickListener {
+public class MainActivity extends Activity implements OnClickListener, OnSeekBarChangeListener {
 
 	// et is the EditText in MainActivity
 	private EditText et;
 	// bt is the button which creates a SlideShow intent
 	private Button bt;
+	// tv is the textview displaying the progress of the scrollbar
+	private TextView tv;
+	// sb is the seekbar that lets the user choose the number of pages
+	private SeekBar sb;
 	// images is a List containing the urls of the images
 	private List<String> images = new ArrayList<String>();
 	
@@ -49,14 +56,32 @@ public class MainActivity extends Activity implements OnClickListener {
 		// set handlers
 		et = (EditText) findViewById(R.id.editText);
 		bt = (Button) 	findViewById(R.id.button);
+		tv = (TextView) findViewById(R.id.pageProgress);
+		sb = (SeekBar)	findViewById(R.id.pages);
+		
+		// set font color and size
+		tv.setTextColor(Color.WHITE);
+		
+		// set initial progress of sb
+		sb.setProgress(25);
 		
 		// set on click listener for button
 		bt.setOnClickListener(this);
+		
+		// create listener for seekbar
+		sb.setOnSeekBarChangeListener(this);
 	}
 	
 	// function for Button bt's onClickListener
 	public void onClick(View v) {
 		if (v.getId() == R.id.button) {
+			// display loading message via toast
+			Toast.makeText(getApplicationContext(), "Building your slideshow. . . .", Toast.LENGTH_SHORT).show();
+			try {
+				Thread.sleep(200);
+			} catch (InterruptedException e1) {
+				e1.printStackTrace();
+			}
 			// create callAPI object for networking
 			callAPI a = new callAPI();
 			// check if input is valid
@@ -67,7 +92,7 @@ public class MainActivity extends Activity implements OnClickListener {
 			} catch (ExecutionException e) {
 				e.printStackTrace();
 			}
-			// dismiss the progress dialog and reset edittext
+			// reset edittext
 			et.setText("");
 			// prepare to go to Slide Show 
 			if (images.size() > 0) {
@@ -81,6 +106,15 @@ public class MainActivity extends Activity implements OnClickListener {
 			else {
 				Toast.makeText(getApplicationContext(), "Something went wrong with the search, sorry!", Toast.LENGTH_SHORT).show();
 			}
+		}
+	}
+	
+	// function to handle the Seekbar and displaying progress
+	@Override
+	public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+		if (seekBar.getId() == R.id.pages) {
+			int limit = progress+1;
+			tv.setText("Number of posts to check for images: " + limit);
 		}
 	}
 	
@@ -117,7 +151,8 @@ public class MainActivity extends Activity implements OnClickListener {
 	
 	// calls getStringFromUrl based on contents of et and parses
 	private void requestAndParse() {
-		String string = "http://www.reddit.com/r/" + et.getText().toString() + "/hot.json?sort=hot";
+		int limit = sb.getProgress()+1;
+		String string = "http://www.reddit.com/r/" + et.getText().toString() + "/hot.json?sort=hot&limit=" + limit;
 		// replace spaces with + for the HttpGet object
 		string = string.replace(' ', '+');
 		string = getStringFromUrl(string);
@@ -157,4 +192,10 @@ public class MainActivity extends Activity implements OnClickListener {
 			return null;
 		}
 	}
+
+	@Override
+	public void onStartTrackingTouch(SeekBar seekBar) {}
+
+	@Override
+	public void onStopTrackingTouch(SeekBar seekBar) {}
 }

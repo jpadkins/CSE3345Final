@@ -27,10 +27,7 @@
 	    android:layout_alignStart="@+id/main_logo"
 	    android:layout_below="@+id/main_logo"
 	    android:ems="10"
-	    android:hint="@string/editText" >
-
-	    <requestFocus />
-	</EditText>
+	    android:hint="@string/editText" />
 
 	<Button
 	    android:id="@+id/button"
@@ -41,5 +38,23 @@
 	    android:layout_toRightOf="@+id/editText"
 	    android:layout_toEndOf="@+id/editText"
 	    android:text="@string/button" />
+
+	<TextView
+	    android:id="@+id/pageProgress"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_alignLeft="@+id/editText"
+	    android:layout_alignStart="@+id/editText"
+	    android:layout_below="@+id/editText"
+	    android:text="@string/pages" />
+
+	<SeekBar
+	    android:id="@+id/pages"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_alignLeft="@+id/pageProgress"
+	    android:layout_alignStart="@+id/pageProgress"
+	    android:layout_below="@+id/pageProgress"
+	    android:max="199" />
 
 </RelativeLayout>

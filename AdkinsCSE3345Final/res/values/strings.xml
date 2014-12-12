@@ -9,5 +9,6 @@
     <string name="hello_world">Hello world!</string>
     <string name="image">SlideShow Image</string>
     <string name="logoDesc">main logo</string>
+    <string name="pages">Number of posts to check for images: 25</string>
 
 </resources>
