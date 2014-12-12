@@ -57,8 +57,6 @@ public class MainActivity extends Activity implements OnClickListener {
 	// function for Button bt's onClickListener
 	public void onClick(View v) {
 		if (v.getId() == R.id.button) {
-			// show progress dialog
-			ProgressDialog progDialog = ProgressDialog.show(this, "", "Creating your slideshow. . . .", true);
 			// create callAPI object for networking
 			callAPI a = new callAPI();
 			// check if input is valid
@@ -70,14 +68,19 @@ public class MainActivity extends Activity implements OnClickListener {
 				e.printStackTrace();
 			}
 			// dismiss the progress dialog and reset edittext
-			progDialog.dismiss();
 			et.setText("");
-			// prepare to go to Slide Show
-			String[] imagesArray = images.toArray(new String[images.size()]);
-			Intent intent = new Intent(this, SlideShow.class);
-			intent.putExtra("images", imagesArray);
-			// call the intent
-			startActivity(intent);
+			// prepare to go to Slide Show 
+			if (images.size() > 0) {
+				String[] imagesArray = images.toArray(new String[images.size()]);
+				Intent intent = new Intent(this, SlideShow.class);
+				intent.putExtra("images", imagesArray);
+				// call the intent
+				startActivity(intent);
+			}
+			// else if the response was bad
+			else {
+				Toast.makeText(getApplicationContext(), "Something went wrong with the search, sorry!", Toast.LENGTH_SHORT).show();
+			}
 		}
 	}
 	
