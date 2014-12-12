@@ -7,5 +7,6 @@
     <string name="button">Search</string>
     <string name="title_activity_slide_show">SlideShow</string>
     <string name="hello_world">Hello world!</string>
+    <string name="image">SlideShow Image</string>
 
 </resources>
