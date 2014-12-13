@@ -70,7 +70,7 @@ public class SlideShow extends Activity {
 			runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
-					tv.setText("Image " + location + " / " + images.length);
+					tv.setText("Image " + location + " / " + (images.length-1));
 					imageView.setImageBitmap(bitmap);
 				}
 			});

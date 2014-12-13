@@ -107,7 +107,7 @@ public class MainActivity extends Activity implements OnClickListener, OnSeekBar
 			}
 			// else if the response was bad
 			else {
-				Toast.makeText(getApplicationContext(), "Something went wrong with the search, sorry!", Toast.LENGTH_SHORT).show();
+				Toast.makeText(getApplicationContext(), "No images were found!", Toast.LENGTH_SHORT).show();
 			}
 		}
 	}
