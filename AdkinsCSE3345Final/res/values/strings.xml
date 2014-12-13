@@ -10,5 +10,6 @@
     <string name="image">SlideShow Image</string>
     <string name="logoDesc">main logo</string>
     <string name="pages">Number of posts to check for images: 25</string>
+    <string name="time">Number of seconds to display each image: 3</string>
 
 </resources>

@@ -55,6 +55,24 @@
 	    android:layout_alignLeft="@+id/pageProgress"
 	    android:layout_alignStart="@+id/pageProgress"
 	    android:layout_below="@+id/pageProgress"
-	    android:max="199" />
+	    android:max="49" />
+	
+	<TextView
+	    android:id="@+id/timeProgress"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_alignLeft="@+id/pages"
+	    android:layout_alignStart="@+id/pages"
+	    android:layout_below="@+id/pages"
+	    android:text="@string/time" />
+
+	<SeekBar
+	    android:id="@+id/time"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_alignLeft="@+id/timeProgress"
+	    android:layout_alignStart="@+id/timeProgress"
+	    android:layout_below="@+id/timeProgress"
+	    android:max="9" />
 
 </RelativeLayout>

@@ -44,6 +44,10 @@ public class MainActivity extends Activity implements OnClickListener, OnSeekBar
 	private TextView tv;
 	// sb is the seekbar that lets the user choose the number of pages
 	private SeekBar sb;
+	// tvTime is the textview displaying the progress of the scrollbar
+	private TextView tvTime;
+	// sbTime is the seekbar that lets the user choose the number of pages
+	private SeekBar sbTime;
 	// images is a List containing the urls of the images
 	private List<String> images = new ArrayList<String>();
 	
@@ -58,30 +62,28 @@ public class MainActivity extends Activity implements OnClickListener, OnSeekBar
 		bt = (Button) 	findViewById(R.id.button);
 		tv = (TextView) findViewById(R.id.pageProgress);
 		sb = (SeekBar)	findViewById(R.id.pages);
+		tvTime = (TextView) findViewById(R.id.timeProgress);
+		sbTime = (SeekBar)	findViewById(R.id.time);
 		
 		// set font color and size
 		tv.setTextColor(Color.WHITE);
+		tvTime.setTextColor(Color.WHITE);
 		
-		// set initial progress of sb
+		// set initial progress of the seekbars
 		sb.setProgress(25);
+		sbTime.setProgress(3);
 		
 		// set on click listener for button
 		bt.setOnClickListener(this);
 		
-		// create listener for seekbar
+		// create listener for seekbars
 		sb.setOnSeekBarChangeListener(this);
+		sbTime.setOnSeekBarChangeListener(this);
 	}
 	
 	// function for Button bt's onClickListener
 	public void onClick(View v) {
 		if (v.getId() == R.id.button) {
-			// display loading message via toast
-			Toast.makeText(getApplicationContext(), "Building your slideshow. . . .", Toast.LENGTH_SHORT).show();
-			try {
-				Thread.sleep(200);
-			} catch (InterruptedException e1) {
-				e1.printStackTrace();
-			}
 			// create callAPI object for networking
 			callAPI a = new callAPI();
 			// check if input is valid
@@ -98,6 +100,7 @@ public class MainActivity extends Activity implements OnClickListener, OnSeekBar
 			if (images.size() > 0) {
 				String[] imagesArray = images.toArray(new String[images.size()]);
 				Intent intent = new Intent(this, SlideShow.class);
+				intent.putExtra("duration", sbTime.getProgress()*1000);
 				intent.putExtra("images", imagesArray);
 				// call the intent
 				startActivity(intent);
@@ -112,9 +115,12 @@ public class MainActivity extends Activity implements OnClickListener, OnSeekBar
 	// function to handle the Seekbar and displaying progress
 	@Override
 	public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+		int limit = progress+1;
 		if (seekBar.getId() == R.id.pages) {
-			int limit = progress+1;
 			tv.setText("Number of posts to check for images: " + limit);
+		}
+		if (seekBar.getId() == R.id.time) {
+			tvTime.setText("Number of seconds to display each image: " + limit);
 		}
 	}
 	

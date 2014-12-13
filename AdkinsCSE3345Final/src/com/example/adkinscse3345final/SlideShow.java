@@ -27,6 +27,8 @@ public class SlideShow extends Activity {
 	private cycleImages c;
 	// tv is the textview which displays the image number
 	private TextView tv;
+	// this is the duration of the pause in milliseconds
+	private int duration;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +48,9 @@ public class SlideShow extends Activity {
 		
 		// set images from the extra data sent by MainActivity
 		images = getIntent().getStringArrayExtra("images");
+		
+		// set duration from the extra data
+		duration = getIntent().getIntExtra("duration", 3000);
 		
 		// start slideshow
 		c.execute();
@@ -85,12 +90,20 @@ public class SlideShow extends Activity {
 	// cycleImages extends AsyncTask and is responsible for setting the images
 	final class cycleImages extends AsyncTask<Void, Void, Void> {
 		
+		int time = 3000;
+		
 		@Override
 		protected Void doInBackground(Void... params) {
+			runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					time = duration;
+				}
+			});
 			while (true) {
 				setImage();
 				try {
-					Thread.sleep(3000);
+					Thread.sleep(time);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
